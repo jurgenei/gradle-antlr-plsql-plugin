@@ -266,6 +266,7 @@ tasks.named('check') {
 def configureXmlAstTask = { name.jurgenei.gradle.antlr.XmlAstGradleTask t, String sourcePath, String outputDirName, String taskDescription ->
     t.group = 'verification'
     t.description = taskDescription
+    t.compression = true
     t.dependsOn tasks.named('compileAntlrSources')
     t.sourceDirectory.set(layout.projectDirectory.dir(sourcePath))
     t.destinationDirectory.set(layout.buildDirectory.dir("xmlast-samples/${outputDirName}"))
