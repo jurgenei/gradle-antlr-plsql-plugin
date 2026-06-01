@@ -3,6 +3,8 @@ import name.jurgenei.gradle.antlr.XmlAstGradleTask
 plugins {
     id 'java'
     id 'antlr'
+    id 'java-gradle-plugin'
+    id 'com.gradle.plugin-publish' version '1.3.1'
     id 'name.jurgenei.gradle.antlr'
     id 'maven-publish'
     id 'signing'
@@ -13,6 +15,20 @@ plugins {
 
 group = 'name.jurgenei.grammars'
 version = '0.1.0'
+
+gradlePlugin {
+    website = 'https://github.com/jurgenei/antlr-grammars-plsql'
+    vcsUrl = 'https://github.com/jurgenei/antlr-grammars-plsql'
+    plugins {
+        plsqlGrammar {
+            id = 'name.jurgenei.grammars.plsql'
+            implementationClass = 'name.jurgenei.grammars.plsql.PlsqlGrammarPlugin'
+            displayName = 'ANTLR Grammar PL/SQL Module'
+            description = 'Grammar module utilities for PL/SQL ANTLR assets.'
+            tags.set(['antlr', 'grammar', 'plsql'])
+        }
+    }
+}
 
 java {
     toolchain {
@@ -291,7 +307,10 @@ tasks.register('allSecurityChecks') {
     group = 'verification'
     description = 'Run all security and quality checks (Dependency-Check, SpotBugs, SonarQube)'
     dependsOn tasks.named('check')
-    dependsOn tasks.named('dependencyCheck')
+    def dependencyCheckTask = tasks.findByName('dependencyCheck') ?: tasks.findByName('dependencyCheckAnalyze')
+    if (dependencyCheckTask != null) {
+        dependsOn dependencyCheckTask
+    }
     dependsOn tasks.named('spotbugsMain')
 }
 
