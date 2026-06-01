@@ -18,7 +18,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Skip Qodana when token is unavailable
+        if: ${{ secrets.QODANA_TOKEN == '' }}
+        run: echo "QODANA_TOKEN is not available for this event; skipping Qodana scan."
       - name: 'Qodana Scan'
+        if: ${{ secrets.QODANA_TOKEN != '' }}
         uses: JetBrains/qodana-action@v2026.1
         env:
           QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
