@@ -1,6 +1,7 @@
 .gradle/
 build/
 out/
+generated-src/
 .idea/
 *.iml
 *.log
