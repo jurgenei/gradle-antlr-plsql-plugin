@@ -6,7 +6,9 @@ pluginManagement {
     }
 }
 
-rootProject.name = 'antlr-grammars-plsql'
+includeBuild("../gradle-antlr-plugin")
+
+rootProject.name = 'gradle-antlr-plsql-plugin'
 
 include(['use-case-01-direct', 'use-case-02-catalog', 'use-case-03-check-hook'])
 project(':use-case-01-direct').projectDir = file('samples/use-case-01-direct')
