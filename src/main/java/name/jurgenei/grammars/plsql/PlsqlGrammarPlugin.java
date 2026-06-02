@@ -4,12 +4,13 @@ import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 
 /**
- * Marker Gradle plugin used to validate publication metadata for this module.
+ * Legacy compatibility alias for the PL/SQL XML AST plugin.
  */
+@Deprecated(forRemoval = false)
 public final class PlsqlGrammarPlugin implements Plugin<Project> {
     @Override
-    public void apply(Project project) {
-        // Intentionally no-op: this module primarily publishes grammar artifacts.
+    public void apply(final Project project) {
+        new XmlAstPlsqlPlugin().apply(project);
     }
 }
 
