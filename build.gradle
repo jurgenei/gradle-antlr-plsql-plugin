@@ -1,3 +1,7 @@
+/*
+ * PL/SQL Language parser plugin.
+ * J.S. Hildebrand (c) 2026
+ */
 import name.jurgenei.gradle.antlr.XmlAstGradleTask
 
 plugins {
