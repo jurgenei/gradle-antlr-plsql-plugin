@@ -39,6 +39,7 @@ java {
 
 repositories {
     mavenCentral()
+    gradlePluginPortal()
     mavenLocal()
 }
 
@@ -190,6 +191,58 @@ sourceSets {
         java {
             srcDirs += ["$buildDir/generated-src/antlr/main"]
         }
+        resources {
+            srcDir 'src/main/antlr'
+            include '**/*.g4'
+        }
+    }
+}
+
+tasks.named('jar', org.gradle.api.tasks.bundling.Jar) {
+    dependsOn tasks.named('compileAntlrSources')
+    from("$buildDir/classes/java/antlr") {
+        include '**/*.class'
+        into ''
+    }
+}
+
+tasks.named('sourcesJar', org.gradle.api.tasks.bundling.Jar) {
+    duplicatesStrategy = org.gradle.api.file.DuplicatesStrategy.EXCLUDE
+}
+
+tasks.register('verifyJarLayout') {
+    group = 'verification'
+    description = 'Verifies grammar jar contains ANTLR classes and .g4 files at expected package paths.'
+    dependsOn tasks.named('jar')
+    def jarArchive = tasks.named('jar', org.gradle.api.tasks.bundling.Jar).flatMap { it.archiveFile }
+    inputs.file(jarArchive)
+
+    doLast {
+        def jarFile = jarArchive.get().asFile
+        def zip = new java.util.zip.ZipFile(jarFile)
+        try {
+            def entries = zip.entries().collect { it.name }
+
+            def required = [
+                    'name/jurgenei/parsers/PlSqlLexer.g4',
+                    'name/jurgenei/parsers/PlSqlParser.g4'
+            ]
+
+            required.each { path ->
+                if (!entries.contains(path)) {
+                    throw new GradleException("Missing required jar entry: ${path} in ${jarFile.name}")
+                }
+            }
+
+            if (!entries.any { it ==~ /name\/jurgenei\/parsers\/PlSqlLexer(\$.*)?\.class/ }) {
+                throw new GradleException("Missing required lexer class entry under name/jurgenei/parsers in ${jarFile.name}")
+            }
+            if (!entries.any { it ==~ /name\/jurgenei\/parsers\/PlSqlParser(\$.*)?\.class/ }) {
+                throw new GradleException("Missing required parser class entry under name/jurgenei/parsers in ${jarFile.name}")
+            }
+        } finally {
+            zip.close()
+        }
     }
 }
 
@@ -231,6 +284,7 @@ tasks.named('check') {
 def configureXmlAstTask = { name.jurgenei.gradle.antlr.XmlAstGradleTask t, String sourcePath, String outputDirName, String taskDescription ->
     t.group = 'verification'
     t.description = taskDescription
+    t.compression = true
     t.dependsOn tasks.named('compileAntlrSources')
     t.sourceDirectory.set(layout.projectDirectory.dir(sourcePath))
     t.destinationDirectory.set(layout.buildDirectory.dir("xmlast-samples/${outputDirName}"))
@@ -302,6 +356,7 @@ tasks.register('xml-ast-more-examples', XmlAstGradleTask) {
 tasks.named('check') {
     // Run XML AST validation in CI via the xmlast wrapper task.
     dependsOn tasks.named('xmlast')
+    dependsOn tasks.named('verifyJarLayout')
 }
 
 // Aggregate security scanning task
@@ -316,3 +371,18 @@ tasks.register('allSecurityChecks') {
     dependsOn tasks.named('spotbugsMain')
 }
 
+def sqlInputDir = "/Users/cs79en/Developer/Projects/lineage/P01744-vortex-oracle-application"
+def astOutputDir = "/Users/cs79en/Developer/Projects/lineage/P01744-vortex-oracle-application.output"
+
+tasks.register('realast', name.jurgenei.gradle.antlr.XmlAstGradleTask) { it ->
+    configureXmlAstTask(it, sqlInputDir, astOutputDir,
+            'Parses benchmark SQL samples parallel.')
+    it.executionModel.set('VIRTUAL_THREADS')
+    it.parallelism.set(3)  // Up to 100 concurrent tasks
+    it.includes.set(['**/*.sql'])
+    it.continueOnError.set(true)
+    it.failOnError.set(false)
+    it.failOnTransformationError.set(false)
+    it.force.set(false)
+    // it.enableDFAMonitoring.set(true)
+}
