@@ -5,6 +5,7 @@ plugins {
     id 'antlr'
     id 'java-gradle-plugin'
     id 'com.gradle.plugin-publish' version '1.3.1'
+    id 'jacoco'
     id 'name.jurgenei.gradle.antlr'
     id 'maven-publish'
     id 'signing'
@@ -22,7 +23,7 @@ gradlePlugin {
     plugins {
         xmlAstPlsql {
             id = 'name.jurgenei.gradle.antlr.plsql'
-            implementationClass = 'name.jurgenei.grammars.plsql.XmlAstPlsqlPlugin'
+            implementationClass = 'name.jurgenei.gradle.antlr.XmlAstPlsqlPlugin'
             displayName = 'Gradle ANTLR PL/SQL Plugin'
             description = 'Preconfigured XML AST task support for PL/SQL grammar parsing.'
             tags.set(['antlr', 'xml', 'ast', 'plsql'])
@@ -268,6 +269,51 @@ tasks.withType(Test).configureEach {
     useJUnit()
 }
 
+jacoco {
+    toolVersion = '0.8.12'
+}
+
+tasks.named('test') {
+    finalizedBy tasks.named('jacocoTestReport')
+}
+
+tasks.named('jacocoTestReport') {
+    dependsOn tasks.named('test')
+    classDirectories.setFrom(files(sourceSets.main.output.classesDirs))
+    sourceDirectories.setFrom(files(sourceSets.main.allSource.srcDirs))
+    reports {
+        xml.required = true
+        html.required = true
+        csv.required = false
+    }
+}
+
+tasks.named('jacocoTestCoverageVerification') {
+    dependsOn tasks.named('jacocoTestReport')
+    classDirectories.setFrom(files(sourceSets.main.output.classesDirs))
+    sourceDirectories.setFrom(files(sourceSets.main.allSource.srcDirs))
+    violationRules {
+        rule {
+            element = 'BUNDLE'
+            limit {
+                counter = 'LINE'
+                value = 'COVEREDRATIO'
+                minimum = 0.20
+            }
+        }
+    }
+}
+
+tasks.register('coverage') {
+    group = 'verification'
+    description = 'Runs tests, generates JaCoCo report, and verifies minimum coverage threshold.'
+    dependsOn tasks.named('jacocoTestCoverageVerification')
+}
+
+tasks.matching { it.name == 'publishPlugins' }.configureEach {
+    notCompatibleWithConfigurationCache('publishPlugins uses Gradle Plugin Publish internals that are not configuration-cache serializable')
+}
+
 tasks.named('compileTestJava') {
     dependsOn tasks.named('compileAntlrSources')
     classpath += files("$buildDir/classes/java/antlr")
@@ -279,6 +325,10 @@ tasks.named('test') {
 
 tasks.named('check') {
     dependsOn tasks.named('verifyGrammarSources')
+}
+
+tasks.named('check') {
+    dependsOn tasks.named('jacocoTestCoverageVerification')
 }
 
 def configureXmlAstTask = { name.jurgenei.gradle.antlr.XmlAstGradleTask t, String sourcePath, String outputDirName, String taskDescription ->
