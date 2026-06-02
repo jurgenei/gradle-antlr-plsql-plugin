@@ -1,3 +1,7 @@
+/*
+ * PL/SQL Language parser plugin.
+ * J.S. Hildebrand (c) 2026
+ */
 import name.jurgenei.gradle.antlr.XmlAstGradleTask
 
 plugins {
@@ -15,7 +19,7 @@ plugins {
 }
 
 group = 'name.jurgenei.gradle'
-version = '0.1.1'
+version = '0.1.2'
 
 gradlePlugin {
     website = 'https://github.com/jurgenei/gradle-antlr-plsql-plugin'
@@ -45,7 +49,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'name.jurgenei.gradle:gradle-antlr-plugin:0.1.1'
+    implementation 'name.jurgenei.gradle:gradle-antlr-plugin:0.1.2'
     antlr 'org.antlr:antlr4:4.13.2'
     implementation 'org.antlr:antlr4-runtime:4.13.2'
     testImplementation gradleTestKit()
