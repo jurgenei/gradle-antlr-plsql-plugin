@@ -1,5 +1,6 @@
 # Gradle ANTLR PL/SQL Plugin
 
+[![Plugin Portal](https://img.shields.io/gradle-plugin-portal/v/name.jurgenei.gradle.antlr.plsql?label=Plugin%20Portal)](https://plugins.gradle.org/plugin/name.jurgenei.gradle.antlr.plsql)
 ![Java](https://img.shields.io/badge/Java-21%2B-007396?logo=openjdk&logoColor=white)
 ![Gradle](https://img.shields.io/badge/Gradle-8%2B-02303A?logo=gradle&logoColor=white)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -22,6 +23,8 @@ plugins {
     id 'name.jurgenei.gradle.antlr.plsql' version '0.1.1'
 }
 ```
+
+Plugin Portal page: https://plugins.gradle.org/plugin/name.jurgenei.gradle.antlr.plsql
 
 Legacy id remains available for compatibility:
 

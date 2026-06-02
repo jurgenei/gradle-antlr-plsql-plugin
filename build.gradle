@@ -27,13 +27,6 @@ gradlePlugin {
             description = 'Preconfigured XML AST task support for PL/SQL grammar parsing.'
             tags.set(['antlr', 'xml', 'ast', 'plsql'])
         }
-        plsqlGrammarLegacy {
-            id = 'name.jurgenei.grammars.plsql'
-            implementationClass = 'name.jurgenei.grammars.plsql.PlsqlGrammarPlugin'
-            displayName = 'Legacy ANTLR Grammar PL/SQL Module'
-            description = 'Compatibility alias for the PL/SQL plugin id.'
-            tags.set(['antlr', 'grammar', 'plsql', 'legacy'])
-        }
     }
 }
 
