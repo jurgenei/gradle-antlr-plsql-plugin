@@ -24,7 +24,7 @@ public class PlsqlGrammarPluginFunctionalTest {
         writeBuildFile(projectDir, """
                 plugins {
                     id 'java'
-                    id 'name.jurgenei.grammars.plsql'
+                    id 'name.jurgenei.gradle.antlr.plsql'
                 }
                 """);
 
@@ -40,7 +40,7 @@ public class PlsqlGrammarPluginFunctionalTest {
         writeBuildFile(projectDir, """
                 plugins {
                     id 'java'
-                    id 'name.jurgenei.grammars.plsql'
+                    id 'name.jurgenei.gradle.antlr.plsql'
                 }
 
                 tasks.register('printPlsqlDefaults') {
@@ -70,7 +70,7 @@ public class PlsqlGrammarPluginFunctionalTest {
         writeBuildFile(projectDir, """
                 plugins {
                     id 'java'
-                    id 'name.jurgenei.grammars.plsql'
+                    id 'name.jurgenei.gradle.antlr.plsql'
                 }
                 """);
 
