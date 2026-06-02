@@ -1,4 +1,4 @@
-package name.jurgenei.grammars.plsql;
+package name.jurgenei.gradle.antlr;
 
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;

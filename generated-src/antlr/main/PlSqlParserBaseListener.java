@@ -1,4 +1,4 @@
-// Generated from /Users/cs79en/Developer/GitHub/gradle/antlr-grammars-plsql/src/main/antlr/name/jurgenei/parsers/PlSqlParser.g4 by ANTLR 4.13.2
+// Generated from /Users/cs79en/Developer/GitHub/gradle/gradle-antlr-plsql-plugin/src/main/antlr/name/jurgenei/parsers/PlSqlParser.g4 by ANTLR 4.13.2
 package name.jurgenei.parsers;
 
 import org.antlr.v4.runtime.ParserRuleContext;

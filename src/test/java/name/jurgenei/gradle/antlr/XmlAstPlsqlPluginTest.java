@@ -1,5 +1,7 @@
 package name.jurgenei.grammars.plsql;
 
+import name.jurgenei.gradle.antlr.XmlAstPlsqlGradleTask;
+import name.jurgenei.gradle.antlr.XmlAstPlsqlPlugin;
 import org.gradle.api.Project;
 import org.gradle.testfixtures.ProjectBuilder;
 import org.junit.Assert;
