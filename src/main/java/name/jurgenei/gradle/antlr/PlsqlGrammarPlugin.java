@@ -8,6 +8,13 @@ import org.gradle.api.Project;
  */
 @Deprecated(forRemoval = false)
 public final class PlsqlGrammarPlugin implements Plugin<Project> {
+
+    /**
+     * Creates the legacy compatibility plugin adapter.
+     */
+    public PlsqlGrammarPlugin() {
+    }
+
     @Override
     public void apply(final Project project) {
         new XmlAstPlsqlPlugin().apply(project);

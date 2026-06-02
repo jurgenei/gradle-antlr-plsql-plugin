@@ -10,6 +10,11 @@ import javax.inject.Inject;
 @Deprecated(forRemoval = false)
 public abstract class PlsqlXmlAstGradleTask extends XmlAstPlsqlGradleTask {
 
+    /**
+     * Creates the legacy compatibility task type.
+     *
+     * @param objects Gradle object factory used by the parent task.
+     */
     @Inject
     public PlsqlXmlAstGradleTask(final ObjectFactory objects) {
         super(objects);

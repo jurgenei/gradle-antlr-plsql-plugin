@@ -11,6 +11,12 @@ import org.gradle.api.tasks.SourceSetContainer;
  */
 public final class XmlAstPlsqlPlugin implements Plugin<Project> {
 
+    /**
+     * Creates the PL/SQL XML AST plugin.
+     */
+    public XmlAstPlsqlPlugin() {
+    }
+
     @Override
     public void apply(final Project project) {
         project.getTasks().register("plsqlXmlAst", XmlAstPlsqlGradleTask.class, task -> {
