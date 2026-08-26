@@ -3,6 +3,7 @@
  * J.S. Hildebrand (c) 2026
  */
 import name.jurgenei.gradle.antlr.XmlAstGradleTask
+import java.util.Locale
 
 plugins {
     id 'java'
@@ -19,7 +20,7 @@ plugins {
 }
 
 group = 'name.jurgenei.gradle'
-version = '0.1.2'
+version = '0.1.3'
 
 gradlePlugin {
     website = 'https://github.com/jurgenei/gradle-antlr-plsql-plugin'
@@ -439,4 +440,64 @@ tasks.register('realast', name.jurgenei.gradle.antlr.XmlAstGradleTask) { it ->
     it.failOnTransformationError.set(false)
     it.force.set(false)
     // it.enableDFAMonitoring.set(true)
+}
+
+tasks.register('xml-ast-profile', XmlAstGradleTask) { XmlAstGradleTask it ->
+    def profileSourceDir = findProperty('xmlast.profile.sourceDir') ?: 'src/test/resources/benchmark'
+    def profileOutputDir = findProperty('xmlast.profile.outputDir') ?: "$buildDir/xmlast-profile"
+    def profileExecutionModel = ((findProperty('xmlast.profile.executionModel') ?: 'SEQUENTIAL') as String).toUpperCase(Locale.ROOT)
+    def profileParallelism = Integer.valueOf((findProperty('xmlast.profile.parallelism') ?: '1').toString())
+    def profileCompression = Boolean.parseBoolean((findProperty('xmlast.profile.compression') ?: 'false').toString())
+    def profileForce = Boolean.parseBoolean((findProperty('xmlast.profile.force') ?: 'true').toString())
+    def profileContinueOnError = Boolean.parseBoolean((findProperty('xmlast.profile.continueOnError') ?: 'true').toString())
+    def profileFailOnError = Boolean.parseBoolean((findProperty('xmlast.profile.failOnError') ?: 'false').toString())
+    def profileFailOnTransformationError = Boolean.parseBoolean((findProperty('xmlast.profile.failOnTransformationError') ?: 'false').toString())
+    def profileSuppressStackTrace = Boolean.parseBoolean((findProperty('xmlast.profile.suppressStackTrace') ?: 'true').toString())
+    def profileEnableDfaMonitoring = Boolean.parseBoolean((findProperty('xmlast.profile.enableDFAMonitoring') ?: 'false').toString())
+    def profileEnableLineCountMetrics = Boolean.parseBoolean((findProperty('xmlast.profile.enableLineCountMetrics') ?: 'false').toString())
+    def profileEnableDecisionProfiling = Boolean.parseBoolean((findProperty('xmlast.profile.enableDecisionProfiling') ?: 'false').toString())
+    def profileDecisionProfileTopN = Integer.valueOf((findProperty('xmlast.profile.decisionProfileTopN') ?: '10').toString())
+    def profileAggressiveGc = Boolean.parseBoolean((findProperty('xmlast.profile.aggressiveGc') ?: 'false').toString())
+    def profileGcEveryFiles = Integer.valueOf((findProperty('xmlast.profile.gcEveryFiles') ?: '25').toString())
+    def profileGcHeapThresholdPercent = Integer.valueOf((findProperty('xmlast.profile.gcHeapThresholdPercent') ?: '80').toString())
+
+    group = 'verification'
+    description = 'Profiles XML AST conversion with runtime-configurable input, output, execution model and memory settings.'
+    dependsOn tasks.named('compileAntlrSources')
+    sourceDirectory.set(file(profileSourceDir))
+    destinationDirectory.set(file(profileOutputDir))
+    parserClassName.set('name.jurgenei.parsers.PlSqlParser')
+    lexerClassName.set('name.jurgenei.parsers.PlSqlLexer')
+    startRule.set('script')
+    includes.set(['**/*.sql'])
+    targetExtension.set('.xml')
+    executionModel.set(profileExecutionModel)
+    parallelism.set(profileParallelism)
+    compression.set(profileCompression)
+    force.set(profileForce)
+    continueOnError.set(profileContinueOnError)
+    failOnError.set(profileFailOnError)
+    failOnTransformationError.set(profileFailOnTransformationError)
+    suppressStackTrace.set(profileSuppressStackTrace)
+    enableDFAMonitoring.set(profileEnableDfaMonitoring)
+    enableLineCountMetrics.set(profileEnableLineCountMetrics)
+    enableDecisionProfiling.set(profileEnableDecisionProfiling)
+    decisionProfileTopN.set(profileDecisionProfileTopN)
+    aggressiveGc.set(profileAggressiveGc)
+    gcEveryFiles.set(profileGcEveryFiles)
+    gcHeapThresholdPercent.set(profileGcHeapThresholdPercent)
+    runtimeClasspath.from(configurations.runtimeClasspath, configurations.antlr, files("$buildDir/classes/java/antlr"))
+
+    doFirst {
+        logger.lifecycle('xml-ast-profile config: sourceDir={}, outputDir={}, executionModel={}, parallelism={}, compression={}, force={}, lineCountMetrics={}, decisionProfiling={}, decisionTopN={}',
+                sourceDirectory.get().asFile,
+                destinationDirectory.get().asFile,
+                executionModel.get(),
+                parallelism.get(),
+                compression.get(),
+                force.get(),
+                enableLineCountMetrics.get(),
+                enableDecisionProfiling.get(),
+                decisionProfileTopN.get())
+    }
 }

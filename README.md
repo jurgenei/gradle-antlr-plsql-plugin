@@ -98,6 +98,19 @@ This project follows the renamed repository convention from grammar modules to G
 ./gradlew publishToMavenLocal
 ```
 
+## Benchmark and Profiling
+
+Run repeatable benchmark/profile matrix with JFR capture:
+
+```bash
+./scripts/profile-xmlast.sh
+```
+
+Fast-mode profiling default disables per-file line-count reread (`enableLineCountMetrics=false`).
+Set `DECISION_PROFILING=true` to emit grammar decision hotspots in report.
+
+Guide and tunables: `PERF_PROFILING.md`
+
 ## Troubleshooting
 
 - `ClassNotFoundException` for parser/lexer classes:
