@@ -78,9 +78,10 @@ jobs:
 
       - name: Upload coverage to Codecov
         if: ${{ env.CODECOV_TOKEN != '' }}
-        uses: codecov/codecov-action@75cd11691c0faa626561e295848008c8a7dddffe
+        uses: codecov/codecov-action@v5
         with:
-          token: ${{ env.CODECOV_TOKEN }}
+          token: ${{ secrets.CODECOV_TOKEN }}
+          slug: jurgenei/gradle-antlr-plsql-plugin
           files: build/reports/jacoco/test/jacocoTestReport.xml
           fail_ci_if_error: false
 
