@@ -3,9 +3,9 @@
 ![Conformance](https://img.shields.io/badge/Conformance-Check--All%20Passing-brightgreen)
 
 [![Plugin Portal](https://img.shields.io/gradle-plugin-portal/v/name.jurgenei.gradle.antlr.plsql?label=Plugin%20Portal)](https://plugins.gradle.org/plugin/name.jurgenei.gradle.antlr.plsql)
-[![Build and Test](https://github.com/jurgenei/gradle-antlr-plsql-plugin/actions/workflows/test-on-push.yml/badge.svg)](https://github.com/jurgenei/gradle-antlr-plsql-plugin/actions/workflows/test-on-push.yml)
-[![Coverage CI](https://github.com/jurgenei/gradle-antlr-plsql-plugin/actions/workflows/coverage.yml/badge.svg)](https://github.com/jurgenei/gradle-antlr-plsql-plugin/actions/workflows/coverage.yml)
-[![Coverage](https://codecov.io/gh/jurgenei/gradle-antlr-plsql-plugin/branch/main/graph/badge.svg)](https://codecov.io/gh/jurgenei/gradle-antlr-plsql-plugin)
+[![Build and Test](https://github.com/jurgenei/gradle-antlr-plsql-plugin/actions/workflows/ci.yml/badge.svg?branch=release%2F0.1.3)](https://github.com/jurgenei/gradle-antlr-plsql-plugin/actions/workflows/ci.yml?query=branch%3Arelease%2F0.1.3)
+[![Coverage CI](https://github.com/jurgenei/gradle-antlr-plsql-plugin/actions/workflows/coverage.yml/badge.svg?branch=release%2F0.1.3)](https://github.com/jurgenei/gradle-antlr-plsql-plugin/actions/workflows/coverage.yml?query=branch%3Arelease%2F0.1.3)
+[![Coverage](https://codecov.io/gh/jurgenei/gradle-antlr-plsql-plugin/graph/badge.svg?branch=release%2F0.1.3)](https://app.codecov.io/gh/jurgenei/gradle-antlr-plsql-plugin?branch=release%2F0.1.3)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Java](https://img.shields.io/badge/java-21+-green.svg)](https://www.oracle.com/java/)
 [![Gradle](https://img.shields.io/badge/gradle-8+-blue.svg)](https://gradle.org/)
