@@ -80,10 +80,9 @@ jobs:
         if: ${{ env.CODECOV_TOKEN != '' }}
         uses: codecov/codecov-action@v5
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+          token: ${{ env.CODECOV_TOKEN }}
           slug: jurgenei/gradle-antlr-plsql-plugin
           files: build/reports/jacoco/test/jacocoTestReport.xml
-          fail_ci_if_error: false
 
       - name: Codecov token missing notice
         if: ${{ env.CODECOV_TOKEN == '' }}
