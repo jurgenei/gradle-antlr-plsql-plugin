@@ -22,11 +22,13 @@ public abstract class XmlAstPlsqlGradleTask extends XmlAstGradleTask {
     @Inject
     public XmlAstPlsqlGradleTask(final ObjectFactory objects) {
         super(objects);
-        getGrammar().convention("plsql");
-        getParserClassName().convention("name.jurgenei.parsers.PlSqlParser");
-        getLexerClassName().convention("name.jurgenei.parsers.PlSqlLexer");
-        getStartRule().convention("script");
-        getIncludes().convention(List.of("**/*.sql", "**/*.pks", "**/*.pkb", "**/*.pls"));
+        LanguageTaskDefaults.of(
+                "plsql",
+                "name.jurgenei.parsers.PlSqlParser",
+                "name.jurgenei.parsers.PlSqlLexer",
+                "script",
+                List.of("**/*.sql", "**/*.pks", "**/*.pkb", "**/*.pls"))
+            .applyTo(this);
     }
 }
 

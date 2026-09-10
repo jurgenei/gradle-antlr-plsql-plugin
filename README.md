@@ -1,9 +1,14 @@
 # Gradle ANTLR PL/SQL Plugin
 
+![Conformance](https://img.shields.io/badge/Conformance-Check--All%20Passing-brightgreen)
+
 [![Plugin Portal](https://img.shields.io/gradle-plugin-portal/v/name.jurgenei.gradle.antlr.plsql?label=Plugin%20Portal)](https://plugins.gradle.org/plugin/name.jurgenei.gradle.antlr.plsql)
-![Java](https://img.shields.io/badge/Java-21%2B-007396?logo=openjdk&logoColor=white)
-![Gradle](https://img.shields.io/badge/Gradle-8%2B-02303A?logo=gradle&logoColor=white)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Build and Test](https://github.com/jurgenei/gradle-antlr-plsql-plugin/actions/workflows/ci.yml/badge.svg?branch=release%2F0.1.3)](https://github.com/jurgenei/gradle-antlr-plsql-plugin/actions/workflows/ci.yml?query=branch%3Arelease%2F0.1.3)
+[![Coverage CI](https://github.com/jurgenei/gradle-antlr-plsql-plugin/actions/workflows/coverage.yml/badge.svg?branch=release%2F0.1.3)](https://github.com/jurgenei/gradle-antlr-plsql-plugin/actions/workflows/coverage.yml?query=branch%3Arelease%2F0.1.3)
+[![Coverage](https://codecov.io/gh/jurgenei/gradle-antlr-plsql-plugin/graph/badge.svg?branch=release%2F0.1.3)](https://app.codecov.io/gh/jurgenei/gradle-antlr-plsql-plugin?branch=release%2F0.1.3)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Java](https://img.shields.io/badge/java-21+-green.svg)](https://www.oracle.com/java/)
+[![Gradle](https://img.shields.io/badge/gradle-8+-blue.svg)](https://gradle.org/)
 
 `gradle-antlr-plsql-plugin` provides preconfigured XML AST task support for PL/SQL parsing workflows.
 
@@ -64,6 +69,18 @@ tasks.named('plsqlXmlAst', name.jurgenei.grammars.plsql.XmlAstPlsqlGradleTask) {
 }
 ```
 
+S-expression output variant:
+
+```groovy
+tasks.named('plsqlXmlAst', name.jurgenei.gradle.antlr.XmlAstPlsqlGradleTask) {
+    targetExtension.set('.sexpr')
+    sexprFormat.set('beautified')
+}
+```
+
+- `targetExtension`: `.xml` (default) or `.sexpr`
+- `sexprFormat`: `compact` (default) or `beautified`
+
 Run:
 
 ```bash
@@ -97,6 +114,29 @@ This project follows the renamed repository convention from grammar modules to G
 ./gradlew clean test
 ./gradlew publishToMavenLocal
 ```
+
+## Extend to new language plugin
+
+Language modules can be scaffolded with shared helpers from `gradle-antlr-plugin`:
+
+- `LanguageTaskDefaults` applies grammar/parser/lexer/startRule/include conventions
+- `LanguagePluginSupport.registerXmlAstTask(...)` registers task with standard metadata
+- `LanguagePluginSupport.wireJavaRuntimeClasspath(...)` wires `runtimeClasspath` and `classes` dependency
+
+Pattern keeps new language plugin class + task class thin and consistent.
+
+## Benchmark and Profiling
+
+Run repeatable benchmark/profile matrix with JFR capture:
+
+```bash
+./scripts/profile-xmlast.sh
+```
+
+Fast-mode profiling default disables per-file line-count reread (`enableLineCountMetrics=false`).
+Set `DECISION_PROFILING=true` to emit grammar decision hotspots in report.
+
+Guide and tunables: `PERF_PROFILING.md`
 
 ## Troubleshooting
 

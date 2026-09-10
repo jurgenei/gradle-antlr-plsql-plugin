@@ -32,6 +32,23 @@ public class XmlAstPlsqlPluginTest {
         Assert.assertEquals("name.jurgenei.parsers.PlSqlLexer", task.getLexerClassName().get());
         Assert.assertEquals("script", task.getStartRule().get());
         Assert.assertTrue(task.getIncludes().get().contains("**/*.sql"));
+        Assert.assertEquals(".xml", task.getTargetExtension().get());
+        Assert.assertEquals("compact", task.getSexprFormat().get());
+    }
+
+    @Test
+    public void supportsSexprOutputConfiguration() {
+        final Project project = ProjectBuilder.builder().build();
+        project.getPluginManager().apply("java");
+
+        new XmlAstPlsqlPlugin().apply(project);
+
+        final XmlAstPlsqlGradleTask task = XmlAstPlsqlGradleTask.class.cast(project.getTasks().getByName("plsqlXmlAst"));
+        task.getTargetExtension().set(".sexpr");
+        task.getSexprFormat().set("beautified");
+
+        Assert.assertEquals(".sexpr", task.getTargetExtension().get());
+        Assert.assertEquals("beautified", task.getSexprFormat().get());
     }
 }
 
