@@ -69,6 +69,18 @@ tasks.named('plsqlXmlAst', name.jurgenei.grammars.plsql.XmlAstPlsqlGradleTask) {
 }
 ```
 
+S-expression output variant:
+
+```groovy
+tasks.named('plsqlXmlAst', name.jurgenei.gradle.antlr.XmlAstPlsqlGradleTask) {
+    targetExtension.set('.sexpr')
+    sexprFormat.set('beautified')
+}
+```
+
+- `targetExtension`: `.xml` (default) or `.sexpr`
+- `sexprFormat`: `compact` (default) or `beautified`
+
 Run:
 
 ```bash
@@ -102,6 +114,16 @@ This project follows the renamed repository convention from grammar modules to G
 ./gradlew clean test
 ./gradlew publishToMavenLocal
 ```
+
+## Extend to new language plugin
+
+Language modules can be scaffolded with shared helpers from `gradle-antlr-plugin`:
+
+- `LanguageTaskDefaults` applies grammar/parser/lexer/startRule/include conventions
+- `LanguagePluginSupport.registerXmlAstTask(...)` registers task with standard metadata
+- `LanguagePluginSupport.wireJavaRuntimeClasspath(...)` wires `runtimeClasspath` and `classes` dependency
+
+Pattern keeps new language plugin class + task class thin and consistent.
 
 ## Benchmark and Profiling
 

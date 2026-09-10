@@ -49,6 +49,8 @@ public class XmlAstPlsqlPluginFunctionalTest {
                         println "parserClassName=${t.parserClassName.get()}"
                         println "lexerClassName=${t.lexerClassName.get()}"
                         println "startRule=${t.startRule.get()}"
+                        println "targetExtension=${t.targetExtension.get()}"
+                        println "sexprFormat=${t.sexprFormat.get()}"
                     }
                 }
                 """);
@@ -60,6 +62,39 @@ public class XmlAstPlsqlPluginFunctionalTest {
         Assert.assertTrue(output.contains("parserClassName=name.jurgenei.parsers.PlSqlParser"));
         Assert.assertTrue(output.contains("lexerClassName=name.jurgenei.parsers.PlSqlLexer"));
         Assert.assertTrue(output.contains("startRule=script"));
+        Assert.assertTrue(output.contains("targetExtension=.xml"));
+        Assert.assertTrue(output.contains("sexprFormat=compact"));
+    }
+
+    @Test
+    public void supportsSexprOutputConfiguration() throws Exception {
+        final File projectDir = temporaryFolder.newFolder("functional-plsql-sexpr-overrides");
+        writeSettings(projectDir);
+        writeBuildFile(projectDir, """
+                plugins {
+                    id 'java'
+                    id 'name.jurgenei.gradle.antlr.plsql'
+                }
+
+                tasks.named('plsqlXmlAst', name.jurgenei.gradle.antlr.XmlAstPlsqlGradleTask) {
+                    targetExtension.set('.sexpr')
+                    sexprFormat.set('beautified')
+                }
+
+                tasks.register('printPlsqlSexprDefaults') {
+                    doLast {
+                        def t = tasks.named('plsqlXmlAst').get()
+                        println "targetExtension=${t.targetExtension.get()}"
+                        println "sexprFormat=${t.sexprFormat.get()}"
+                    }
+                }
+                """);
+
+        final BuildResult result = run(projectDir, "printPlsqlSexprDefaults");
+        final String output = result.getOutput();
+
+        Assert.assertTrue(output.contains("targetExtension=.sexpr"));
+        Assert.assertTrue(output.contains("sexprFormat=beautified"));
     }
 
     private static BuildResult run(final File projectDir, final String... args) {

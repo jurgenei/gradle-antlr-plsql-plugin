@@ -22,6 +22,11 @@ plugins {
 group = 'name.jurgenei.gradle'
 version = '0.1.3'
 
+ext {
+    spotbugsEngineVersion = '4.8.6'
+    findSecBugsVersion = '1.13.0'
+}
+
 gradlePlugin {
     website = 'https://github.com/jurgenei/gradle-antlr-plsql-plugin'
     vcsUrl = 'https://github.com/jurgenei/gradle-antlr-plsql-plugin'
@@ -50,11 +55,14 @@ repositories {
 }
 
 dependencies {
-    implementation 'name.jurgenei.gradle:gradle-antlr-plugin:0.1.2'
-    antlr 'org.antlr:antlr4:4.13.2'
+    implementation 'name.jurgenei.gradle:gradle-antlr-plugin:0.1.5'
     implementation 'org.antlr:antlr4-runtime:4.13.2'
+
+    antlr 'org.antlr:antlr4:4.13.2'
+
     testImplementation gradleTestKit()
     testImplementation 'junit:junit:4.13.2'
+    spotbugsPlugins "com.h3xstream.findsecbugs:findsecbugs-plugin:${findSecBugsVersion}"
 }
 
 publishing {
@@ -122,9 +130,17 @@ dependencyCheck {
 
 // SpotBugs configuration
 spotbugs {
+    toolVersion = spotbugsEngineVersion
     ignoreFailures = false
     effort = com.github.spotbugs.snom.Effort.valueOf('DEFAULT')
     reportLevel = com.github.spotbugs.snom.Confidence.valueOf('MEDIUM')
+}
+
+tasks.withType(com.github.spotbugs.snom.SpotBugsTask).configureEach {
+    reports {
+        html.required = true
+        xml.required = false
+    }
 }
 
 tasks.named('spotbugsMain') {
