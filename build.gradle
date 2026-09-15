@@ -20,7 +20,7 @@ plugins {
 }
 
 group = 'name.jurgenei.gradle'
-version = '0.1.3'
+version = '0.1.4'
 
 ext {
     spotbugsEngineVersion = '4.8.6'
@@ -55,7 +55,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'name.jurgenei.gradle:gradle-antlr-plugin:0.1.5'
+    implementation 'name.jurgenei.gradle:gradle-antlr-plugin:0.1.6'
     implementation 'org.antlr:antlr4-runtime:4.13.2'
 
     antlr 'org.antlr:antlr4:4.13.2'
