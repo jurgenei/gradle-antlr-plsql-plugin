@@ -34,7 +34,7 @@ public class PlSqlLexerParserTest {
         testSqlFiles = TestResourceDirectoryProvider.getSqlFilesInDirectory(
             new File("src/test/resources/plsql")
         );
-        Assert.assertTrue("No SQL test files found in src/test/resources/plsql", !testSqlFiles.isEmpty());
+        Assert.assertFalse("No SQL test files found in src/test/resources/plsql", testSqlFiles.isEmpty());
 
         // Dynamically load PlSqlLexer and PlSqlParser classes
         loadParserClasses();
