@@ -74,12 +74,12 @@ S-expression output variant:
 ```groovy
 tasks.named('plsqlXmlAst', name.jurgenei.gradle.antlr.XmlAstPlsqlGradleTask) {
     targetExtension.set('.xir')
-    xirFormat.set('beautified')
+    outputFormat.set('beautified')
 }
 ```
 
 - `targetExtension`: `.xml` (default) or `.xir`
-- `xirFormat`: `compact` (default) or `beautified`
+- `outputFormat`: `compact` (default) or `beautified`
 
 Run:
 

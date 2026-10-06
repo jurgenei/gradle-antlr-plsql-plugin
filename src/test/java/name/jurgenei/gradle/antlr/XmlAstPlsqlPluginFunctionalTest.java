@@ -50,7 +50,7 @@ public class XmlAstPlsqlPluginFunctionalTest {
                         println "lexerClassName=${t.lexerClassName.get()}"
                         println "startRule=${t.startRule.get()}"
                         println "targetExtension=${t.targetExtension.get()}"
-                        println "xirFormat=${t.xirFormat.get()}"
+                        println "outputFormat=${t.outputFormat.get()}"
                     }
                 }
                 """);
@@ -63,7 +63,7 @@ public class XmlAstPlsqlPluginFunctionalTest {
         Assert.assertTrue(output.contains("lexerClassName=name.jurgenei.parsers.PlSqlLexer"));
         Assert.assertTrue(output.contains("startRule=script"));
         Assert.assertTrue(output.contains("targetExtension=.xml"));
-        Assert.assertTrue(output.contains("xirFormat=compact"));
+        Assert.assertTrue(output.contains("outputFormat=compact"));
     }
 
     @Test
@@ -78,14 +78,14 @@ public class XmlAstPlsqlPluginFunctionalTest {
 
                 tasks.named('plsqlXmlAst', name.jurgenei.gradle.antlr.XmlAstPlsqlGradleTask) {
                     targetExtension.set('.xir')
-                    xirFormat.set('beautified')
+                    outputFormat.set('beautified')
                 }
 
                 tasks.register('printPlsqlXirDefaults') {
                     doLast {
                         def t = tasks.named('plsqlXmlAst').get()
                         println "targetExtension=${t.targetExtension.get()}"
-                        println "xirFormat=${t.xirFormat.get()}"
+                        println "outputFormat=${t.outputFormat.get()}"
                     }
                 }
                 """);
@@ -94,7 +94,7 @@ public class XmlAstPlsqlPluginFunctionalTest {
         final String output = result.getOutput();
 
         Assert.assertTrue(output.contains("targetExtension=.xir"));
-        Assert.assertTrue(output.contains("xirFormat=beautified"));
+        Assert.assertTrue(output.contains("outputFormat=beautified"));
     }
 
     private static BuildResult run(final File projectDir, final String... args) {
@@ -119,4 +119,3 @@ public class XmlAstPlsqlPluginFunctionalTest {
                 StandardCharsets.UTF_8);
     }
 }
-
