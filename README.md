@@ -25,17 +25,7 @@ It builds on `name.jurgenei.gradle.antlr` and offers task defaults tailored for 
 
 ```groovy
 plugins {
-    id 'name.jurgenei.gradle.antlr.plsql' version '0.1.1'
-}
-```
-
-Plugin Portal page: https://plugins.gradle.org/plugin/name.jurgenei.gradle.antlr.plsql
-
-Legacy id remains available for compatibility:
-
-```groovy
-plugins {
-    id 'name.jurgenei.grammars.plsql' version '0.1.1'
+    id 'name.jurgenei.gradle.antlr.plsql'
 }
 ```
 
@@ -58,7 +48,7 @@ Default task conventions:
 ```groovy
 plugins {
     id 'java'
-    id 'name.jurgenei.gradle.antlr.plsql' version '0.1.1'
+    id 'name.jurgenei.gradle.antlr.plsql' 
 }
 
 tasks.named('plsqlXmlAst', name.jurgenei.grammars.plsql.XmlAstPlsqlGradleTask) {
@@ -86,44 +76,6 @@ Run:
 ```bash
 ./gradlew plsqlXmlAst
 ```
-
-## Common Workflow
-
-```bash
-./gradlew clean check plsqlXmlAst
-```
-
-Supporting tasks commonly used in this repository:
-
-- `generateLexerSources`
-- `generateParserSources`
-- `compileAntlrSources`
-- `verifyGrammarSources`
-- `xmlast` (wrapper task for sample conversions)
-
-## Repository Rename
-
-This project follows the renamed repository convention from grammar modules to Gradle plugin naming:
-
-- previous: `https://github.com/jurgenei/antlr-grammars-plsql`
-- current: `https://github.com/jurgenei/gradle-antlr-plsql-plugin`
-
-## Development
-
-```bash
-./gradlew clean test
-./gradlew publishToMavenLocal
-```
-
-## Extend to new language plugin
-
-Language modules can be scaffolded with shared helpers from `gradle-antlr-plugin`:
-
-- `LanguageTaskDefaults` applies grammar/parser/lexer/startRule/include conventions
-- `LanguagePluginSupport.registerXmlAstTask(...)` registers task with standard metadata
-- `LanguagePluginSupport.wireJavaRuntimeClasspath(...)` wires `runtimeClasspath` and `classes` dependency
-
-Pattern keeps new language plugin class + task class thin and consistent.
 
 ## Benchmark and Profiling
 
