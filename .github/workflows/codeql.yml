@@ -28,6 +28,31 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Ensure gradle-antlr-plugin is available
+        shell: bash
+        run: |
+          set -euo pipefail
+          ROOT_PARENT="$(dirname "$GITHUB_WORKSPACE")"
+          OWNER="${GITHUB_REPOSITORY_OWNER}"
+
+          if [ -d "$ROOT_PARENT/gradle-antlr-plugin/.git" ]; then
+            echo "gradle-antlr-plugin already present"
+            exit 0
+          fi
+
+          if git clone --depth 1 "https://github.com/$OWNER/gradle-antlr-plugin.git" "$ROOT_PARENT/gradle-antlr-plugin"; then
+            echo "Cloned $OWNER/gradle-antlr-plugin"
+            exit 0
+          fi
+
+          if git clone --depth 1 "https://github.com/jurgenei/gradle-antlr-plugin.git" "$ROOT_PARENT/gradle-antlr-plugin"; then
+            echo "Cloned jurgenei/gradle-antlr-plugin"
+            exit 0
+          fi
+
+          echo "Could not clone required gradle-antlr-plugin"
+          exit 1
+
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
@@ -39,4 +64,3 @@ jobs:
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
-
